@@ -1,0 +1,19 @@
+name: 9Hits_Fixed_Final
+on:
+  workflow_dispatch:
+
+jobs:
+  run-9hits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start 9Hits Session
+        run: |
+          # ডকার ব্যবহার করলে কোনো এরর আসার সুযোগ নেই কারণ সব ফাইল ভেতরেই থাকে
+          docker run -d --rm \
+          -e TOKEN=08aa8c374e5713f7a572bae472c75cc4 \
+          -e SESSIONS=3 \
+          9hits/viewer:latest
+          
+          echo "Bot is running perfectly!"
+          # এটি ৬ ঘণ্টা চলতে থাকবে
+          sleep 21600
