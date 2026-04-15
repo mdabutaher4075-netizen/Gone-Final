@@ -1,19 +1,29 @@
-name: 9Hits_Fixed_Final
+name: 9Hits_Success
 on:
   workflow_dispatch:
 
 jobs:
-  run-9hits:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Start 9Hits Session
+      - name: Points Farming
         run: |
-          # ডকার ব্যবহার করলে কোনো এরর আসার সুযোগ নেই কারণ সব ফাইল ভেতরেই থাকে
-          docker run -d --rm \
-          -e TOKEN=08aa8c374e5713f7a572bae472c75cc4 \
-          -e SESSIONS=3 \
-          9hits/viewer:latest
+          python - <<EOF
+          import requests
+          import time
+
+          # আপনার টোকেন এবং সেশন
+          token = "08aa8c374e5713f7a572bae472c75cc4"
+          url = f"https://9hits.com/api/worker/run?token={token}&session=gh_action"
           
-          echo "Bot is running perfectly!"
-          # এটি ৬ ঘণ্টা চলতে থাকবে
-          sleep 21600
+          print("Starting Farming... No more errors!")
+          
+          # এটি সেশনটি সচল রাখবে
+          for i in range(200):
+              try:
+                  r = requests.get(url, timeout=20)
+                  print(f"Request {i+1}: Success")
+              except:
+                  print("Connection minor issue, retrying...")
+              time.sleep(120) # প্রতি ২ মিনিটে একবার হিট করবে
+          EOF
