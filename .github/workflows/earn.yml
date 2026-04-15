@@ -1,29 +1,16 @@
-name: 9Hits_Success
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Points Farming
+      - name: Start 9Hits Session
         run: |
-          python - <<EOF
-          import requests
-          import time
-
-          # আপনার টোকেন এবং সেশন
-          token = "08aa8c374e5713f7a572bae472c75cc4"
-          url = f"https://9hits.com/api/worker/run?token={token}&session=gh_action"
+          # প্রয়োজনীয় লাইব্রেরি ইনস্টল
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libgbm1 libasound2
           
-          print("Starting Farming... No more errors!")
+          # ভিউয়ার ডাউনলোড এবং এক্সট্রাক্ট
+          curl -sL https://9hits.com/downloads/v3/9hits-viewer-linux-x64.tar.bz2 | tar -xj
+          cd 9hits-viewer-linux-x64
+          chmod +x 9hits-viewer
           
-          # এটি সেশনটি সচল রাখবে
-          for i in range(200):
-              try:
-                  r = requests.get(url, timeout=20)
-                  print(f"Request {i+1}: Success")
-              except:
-                  print("Connection minor issue, retrying...")
-              time.sleep(120) # প্রতি ২ মিনিটে একবার হিট করবে
-          EOF
+          # আসল সফটওয়্যার রান করা (এটি লিঙ্ক নয়, সরাসরি অ্যাপ)
+          ./9hits-viewer --token=08aa8c374e5713f7a572bae472c75cc4 --allow-ca --session=gh_action &
+          
+          # ৬ ঘণ্টা পর্যন্ত চলতে থাকবে
+          sleep 21600
